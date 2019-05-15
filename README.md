@@ -1,0 +1,2 @@
+# SpringPratice
+Spring for azure
