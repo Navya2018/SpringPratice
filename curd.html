@@ -1,0 +1,137 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+		<style>
+			body
+			{
+				background-image: url("3.jpg");
+				background-repeat: no-repeat;
+				background-size: cover;
+				background-position: center
+			}
+			#form
+			{
+				display: none;
+				border:1px solid #ccc;
+				border-radius: 10px;
+				padding:20px;
+				width:400px;
+				margin-left:300px;
+				background:lightblue;
+				opacity:0.9;
+			}
+			button
+			{
+				width:100px;
+				height: 30px;
+				box-shadow: 5px 5px 10px #555;
+			}
+			button:hover
+			{
+				transform: scaley(1.10);
+				border-radius: 10px;
+				box-shadow: 0px 0px 0px #fff;
+			}
+			tr{
+				color:black;
+				background:#fff;
+				opacity:0.8;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container" ng-app="myApp" ng-controller="myCtrl">
+			<button class="btn btn-primary" id="btn">Add</button><br><br>
+			<div id="form">
+				<h4 class="text-center">Enter Data Here To Add</h4>
+				<input type="number" ng-model="updateData.id" class="form-control" placeholder="enter number" ><br>
+				<input type="text" ng-model="updateData.name" class="form-control" placeholder="enter name"><br>
+				<input type="email" ng-model="updateData.email" class="form-control" placeholder="enter email"><br>
+				<div class='text-center'>
+					<button class="btn btn-primary" ng-click="add(updateData)">Add</button>
+					<button class="btn btn-success" ng-click="update(updateData)">Update</button>
+				</div>
+			</div><br>
+			<input type="text" name="" ng-model="search" class="form-control" placeholder="Search for data.......">
+			<br><br>
+			<table class="table table-bordered">
+				<theda>
+					<tr>
+						<th>ID</th>
+						<th>NAME</th>
+						<th>EMAIL</th>
+						<th colspan="2">OPER</th>
+					</tr>
+				</theda>
+				<tbody>
+					<tr ng-repeat="data in dataArray | filter:search">
+						<td>{{data.id}}</td>
+						<td>{{data.name}}</td>
+						<td>{{data.email}}</td>
+						<td><button class='btn btn-info edit' ng-click="edit(data)" id="edit">Edit</button></td>
+						<td><button class='btn btn-danger' ng-click="delete(data)">Remove</button></td>
+					</tr>
+				</tbody>				
+			</table>
+		</div>
+		<script>
+			var app = angular.module("myApp",[]);
+			app.controller("myCtrl",function($scope){
+				$scope.dataArray = [
+					{id:1,name:'user1',email:"user1@gmail.com"},
+					{id:2,name:'user2',email:"user2@gmail.com"},
+					{id:3,name:'user3',email:"user3@gmail.com"}
+				];
+				$scope.add = function(updateData)
+				{
+					console.log()
+					//var obj = {id:$scope.id,name:$scope.name,email:$scope.email};
+					$scope.dataArray.push(updateData);
+					$scope.clearInput();
+				};
+				$scope.delete = function(x)
+				{
+					var index = $scope.dataArray.indexOf(x);
+					$scope.dataArray.splice(index,1);
+				};
+				$scope.edit = function(data)
+				{
+					$scope.updateData = angular.copy(data);
+				};
+				$scope.update = function(updateData)
+				{
+					console.log(updateData.id);
+					for(var i=0;i<$scope.dataArray.length;i++)
+					{
+						if($scope.dataArray[i].id == updateData
+							.id)
+						{
+							$scope.dataArray[i].name = updateData.name;
+							$scope.dataArray[i].email = updateData.email;
+						}
+					}
+					$scope.clearInput();
+				};
+				$scope.clearInput = function()
+				{
+					$scope.updateData = {};
+				}
+			});
+		</script>
+		<script>
+			$(document).ready(function(){
+				$("#btn").click(function(){
+					$("#form").toggle(500);
+				});
+				$(".edit").click(function(){
+					$("#form").show(500);
+				});
+			});
+		</script>
+	</body>
+</html>
